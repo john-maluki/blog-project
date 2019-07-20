@@ -1,0 +1,9 @@
+action: flake8, msg: getenv
+cwd: /home/maluki/blog/django_blog/blog_project/.tox
+cmd: /home/maluki/blog/django_blog/blogEnv/bin/python3 -m virtualenv --no-download --python /home/maluki/blog/django_blog/blogEnv/bin/python3 flake8
+Already using interpreter /home/maluki/blog/django_blog/blogEnv/bin/python3
+Using base prefix '/usr'
+New python executable in /home/maluki/blog/django_blog/blog_project/.tox/flake8/bin/python3
+Also creating executable in /home/maluki/blog/django_blog/blog_project/.tox/flake8/bin/python
+Installing setuptools, pip, wheel...
+done.

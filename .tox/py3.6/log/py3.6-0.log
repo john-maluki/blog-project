@@ -1,0 +1,9 @@
+action: py3.6, msg: getenv
+cwd: /home/maluki/blog/django_blog/blog_project/.tox
+cmd: /home/maluki/blog/django_blog/blogEnv/bin/python3 -m virtualenv --no-download --python /home/maluki/blog/django_blog/blogEnv/bin/python3 py3.6
+Already using interpreter /home/maluki/blog/django_blog/blogEnv/bin/python3
+Using base prefix '/usr'
+New python executable in /home/maluki/blog/django_blog/blog_project/.tox/py3.6/bin/python3
+Also creating executable in /home/maluki/blog/django_blog/blog_project/.tox/py3.6/bin/python
+Installing setuptools, pip, wheel...
+done.
