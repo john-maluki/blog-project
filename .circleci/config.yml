@@ -1,0 +1,22 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3
+    steps:
+      - checkout
+      - run: 
+          name: install dependencies
+          command: |
+            pip install --upgrade setuptools
+            sudo apt-get install python3-venv
+            python3 -m venv blogEnv
+            . blogEnv/bin/activate
+            pip3 install -r test_requirements.txt
+            
+  
+      - run:
+          name: run tests
+          command: |
+           . blogEnv/bin/activate
+           pytest 
