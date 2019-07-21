@@ -19,4 +19,4 @@ jobs:
           name: run tests
           command: |
            . blogEnv/bin/activate
-           pytest 
+           tox  
