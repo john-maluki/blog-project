@@ -1,0 +1,12 @@
+[run]
+branch = True
+
+
+[report]
+fail_under = 100
+precision = 2
+show_missing = True
+
+[html]
+directory = coverage_html_report
+title= Blog coverage report
