@@ -14,3 +14,6 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog:post_detail', args=[str(self.pk)])
+
+    def get_api_url(self):
+        return reverse('post_rud', kwargs={'pk': self.pk})

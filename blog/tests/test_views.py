@@ -32,7 +32,7 @@ class BlogTests(TestCase):
         response = self.client.get(reverse('blog:home'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Nice body content')
-        self.assertTemplateUsed(response, 'home.html')
+        self.assertTemplateUsed(response, 'blog/home.html')
 
     def test_post_detail_view(self):
         response = self.client.get('/post/1/')
@@ -40,7 +40,7 @@ class BlogTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(no_response.status_code, 404)
         self.assertContains(response, 'A good title')
-        self.assertTemplateUsed(response, 'post_detail.html')
+        self.assertTemplateUsed(response, 'blog/post_detail.html')
 
     def test_post_create_view(self):
         response = self.client.post(reverse('blog:post_new'), {

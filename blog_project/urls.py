@@ -21,4 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # blog app url
     path('', include('blog.urls', namespace='blog')),
+    # api posting url
+    path('', include('blog.api.urls')),
 ]
