@@ -3,10 +3,10 @@ branch = True
 
 
 [report]
-fail_under = 90
+fail_under = 85
 precision = 2
 show_missing = True
 
 [html]
 directory = coverage_html_report
-title= Blog coverage report
+title = Blog coverage report

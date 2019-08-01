@@ -9,16 +9,16 @@ from .views import (
 
 urlpatterns = [
     # api app url
-    path('api/post/<int:pk>/', BlogPostRudView.as_view(), name='post_rud'),
-    path('api/post/', BlogPostCreateView.as_view(), name='post_create'),
-    path('api/post/list/', BlogPostListView.as_view(), name='post_list'),
+    path('api/v1/post/<int:pk>/', BlogPostRudView.as_view(), name='post_rud'),
+    path('api/v1/post/', BlogPostCreateView.as_view(), name='post_create'),
+    path('api/v1/post/list/', BlogPostListView.as_view(), name='post_list'),
     path(
-        'api/post/update/<int:pk>/',
+        'api/v1/post/update/<int:pk>/',
         BlogPostRetrieveUpdateView.as_view(),
         name='post_update'
     ),
     path(
-        'api/post/delete/<int:pk>/',
+        'api/v1/post/delete/<int:pk>/',
         BlogPostRetrieveDestroyView.as_view(),
         name='post_delete'
     ),

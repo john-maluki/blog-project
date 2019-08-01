@@ -23,4 +23,6 @@ urlpatterns = [
     path('', include('blog.urls', namespace='blog')),
     # api posting url
     path('', include('blog.api.urls')),
+    # contact app url
+    path('contact/', include('contact.urls', namespace='contact')),
 ]
