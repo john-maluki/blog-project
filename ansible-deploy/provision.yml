@@ -31,5 +31,3 @@
       file: path=/etc/nginx/sites-enabled/default state=absent
 
 - include: deploy.yml
-
-# vim:ft=ansible:

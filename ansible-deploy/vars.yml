@@ -69,5 +69,7 @@ system_packages:
   - python3-pip
   - python3-dev
   - python3-psycopg2
+  - python3-apt
+  
 
 # vim:ft=ansible:

@@ -1,2 +1,2 @@
 [maluki-webservers]
-35.184.133.116 ansible_user=ubuntu ansible_ssh_private_key_file=path/to/private/key.pem
+35.232.97.185 ansible_user=maluki ansible_ssh_private_key_file=path/to/private/key.pem
