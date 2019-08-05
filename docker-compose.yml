@@ -1,0 +1,13 @@
+version: '3.1' # Specify version of Docker Compose
+
+services:
+  web:
+    build: .
+    # build the current directory, execute runserver on startup
+    command: python /blog/manage.py migrate
+    command: python /blog/manage.py runserver 0.0.0.0:8000 
+    volumes:
+      - .:/blog
+    ports:
+      # expose port 8000 which is Django’s default so the container will expose it, too.
+      - 8000:8000

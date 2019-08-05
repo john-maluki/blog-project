@@ -1,0 +1,13 @@
+---
+ - hosts: maluki-webservers
+   user: maluki
+   vars: 
+     welcome: "welcome to the ansible"
+
+   tasks:
+    - name: copying files
+      copy:
+        dest: /home/maluki/txt
+        content: "{{welcome}}"
+     
+  

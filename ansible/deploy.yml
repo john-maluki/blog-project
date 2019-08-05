@@ -1,0 +1,113 @@
+---
+
+- name: Deploy to server
+  hosts: maluki-webservers
+  vars_files:
+    - vars.yml
+  become: yes
+
+  tasks:
+    - name: ensure nginx is at the latest version
+      apt: name=nginx state=latest
+    - name: start nginx
+      service:
+          name: nginx
+          state: started
+
+    - name: Install System Packages
+      apt: name={{ system_packages }} update-cache=yes
+
+    - name: Copy .env file
+      copy:
+        src: /home/maluki/blog/django_blog/blog_project/.env
+        dest: /home/maluki/blogProject/
+
+    - name: Create Database
+      become_user: postgres
+      postgresql_db: name={{ POSTGRES_DB }}
+
+    - name: Create Database user
+      become_user: postgres
+      postgresql_user: db={{ POSTGRES_DB }} name={{ POSTGRES_USER }} password={{ POSTGRES_PASSWORD }}
+
+    - name: Install virtualenv
+      pip: name=virtualenv executable=pip3
+      
+    - name: Deploy from pip registry to virtualenv
+      pip: 
+        name: django-jo-blog-app==0.1.4
+        virtualenv: /home/maluki/blogProject/myenv
+    
+    - name: Pip install gunicorn
+      pip: name=gunicorn virtualenv=/home/maluki/blogProject/myenv
+
+    - name: Pip install psycopg2
+      pip: name=psycopg2 virtualenv=/home/maluki/blogProject/myenv
+
+    - name: Pip install whitenoise
+      pip: name=whitenoise virtualenv=/home/maluki/blogProject/myenv
+
+    # - name: Perform migration
+    #   shell: |
+    #     . myenv/bin/activate
+    #     chdir: /home/maluki/blogProject/
+
+    # - name: Copy nginx conf file
+    #   copy:
+    #     src: /home/maluki/Documents/LibraryApp/LibAppDjango/confdns
+    #     dest: /etc/nginx/sites-available/
+
+    # - name: Create Symbolic link
+    #   file:
+    #     src: /etc/nginx/sites-available/confdns
+    #     dest: /etc/nginx/sites-enabled/default
+    #     state: link
+    
+    # - name: Restart nginx to make changes
+    #   service:
+    #     name: nginx
+    #     state: restarted
+
+    - name: start gunicorn
+      shell: |
+        . myenv/bin/activate
+        gunicorn --daemon --workers 3 --bind unix:/home/maluki/blogProject/blogProject.sock blog_project.wsgi
+      args:
+        chdir: /home/maluki/blogProject/
+
+    # - name: Add Certbot
+    #   apt_repository:
+    #     repo: 'ppa:certbot/certbot'
+    #     state: present
+    #     update-cache: yes
+
+    # - name: Install python-certbot
+    #   apt: name=python-certbot-nginx state=present
+
+    # - name: Stop nginx to open port 80
+    #   service:
+    #     name: nginx
+    #     state: stopped
+    
+    # - name: Enable https
+    #   shell:
+    #     certbot --nginx -d server    
+        
+    - name: Allow UFW
+      ufw:
+        state: enabled
+
+    - name: Allow OpenSSH
+      ufw:
+        rule: allow
+        name: OpenSSH
+
+    - name: Allow Nginx Full
+      ufw:
+        rule: allow
+        name: Nginx Full
+
+    - name: Restart nginx to make changes
+      service:
+        name: nginx
+        state: restarted

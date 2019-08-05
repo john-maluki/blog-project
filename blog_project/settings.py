@@ -21,8 +21,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'p*4^#x%o9!h&@%de1&c19hn31a-o!%1c0r^5wt+5)vokm)$lvd'
-SECRET_KEY = os.environ["BLOG_SECRET_KEY"]
+SECRET_KEY = 'p*4^#x%o9!h&@%de1&c19hn31a-o!%1c0r^5wt+5)vokm)$lvd'
+# SECRET_KEY = os.environ["BLOG_SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -80,10 +80,20 @@ WSGI_APPLICATION = 'blog_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'blog',
+        'USER': 'muimi',
+        'PASSWORD': '123456789',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -128,10 +138,14 @@ USE_TZ = True
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # The absolute path to the directory where collectstatic will collect static files for deployment.
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 
 # The URL to use when referring to static files (where they will be served from)
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    (os.path.join(BASE_DIR, 'static')),
+)
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -147,7 +161,7 @@ CELERY_TIMEZONE = 'Africa/Nairobi'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
-DEFAULT_FROM_EMAIL = 'Contact <picha@example.com>'
+DEFAULT_FROM_EMAIL = 'john.maluki12@gmail.com'
 
 REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_CLASSES': [
