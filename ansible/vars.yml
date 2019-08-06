@@ -1,8 +1,8 @@
 ---
 
-POSTGRES_DB: libdb
-POSTGRES_USER: libdb
-POSTGRES_PASSWORD: libdb
+POSTGRES_DB: blog
+POSTGRES_USER: muimi
+POSTGRES_PASSWORD: 123456789
 
 system_packages:
   - postgresql

@@ -27,6 +27,9 @@
       become_user: postgres
       postgresql_user: db={{ db_name }} name={{ db_user }} password={{ db_password }} priv=ALL
 
+    - name: restart postgresql
+      service: name=postgresql state=restarted
+
     - name: remove default nginx site
       file: path=/etc/nginx/sites-enabled/default state=absent
 

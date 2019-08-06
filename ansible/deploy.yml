@@ -47,10 +47,10 @@
     - name: Pip install whitenoise
       pip: name=whitenoise virtualenv=/home/maluki/blogProject/myenv
 
-    # - name: Perform migration
-    #   shell: |
-    #     . myenv/bin/activate
-    #     chdir: /home/maluki/blogProject/
+    - name: Perform migration
+      shell: |
+        . myenv/bin/activate
+        chdir: /home/maluki/blogProject/
 
     # - name: Copy nginx conf file
     #   copy:

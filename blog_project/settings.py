@@ -27,7 +27,7 @@ SECRET_KEY = 'p*4^#x%o9!h&@%de1&c19hn31a-o!%1c0r^5wt+5)vokm)$lvd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'blogig-app.herokuapp.com']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'blogig-app.herokuapp.com', '35.184.133.116', 'mumyi.online', 'www.mumyi.online']
 
 
 # Application definition

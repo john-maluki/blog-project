@@ -21,7 +21,8 @@ install_root: /srv
 wsgi_module: blog_project.wsgi
 
 # any directories that need to be added to the PYTHONPATH.
-pythonpath: "{{ install_root }}/{{ project_name }}/blog_project/apps"
+# pythonpath: "{{ install_root }}/{{ project_name }}/blog_project/apps"
+pythonpath: "{{ install_root }}/{{ project_name }}/blog_project"
 
 # the git repository URL for the project
 project_repo: https://github.com/john-maluki/blog-project.git
@@ -56,7 +57,7 @@ server_name: mumyi.online
 # }
 db_name: blog
 db_user: muimi
-db_password: 123456789
+db_password: "123456789"
 
 # apt packages, you should not need to change this unless you have packages
 # listed in your requirements.txt that depend on system packages.
@@ -70,6 +71,7 @@ system_packages:
   - python3-dev
   - python3-psycopg2
   - python3-apt
+  - python3
   
 
 # vim:ft=ansible:

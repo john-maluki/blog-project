@@ -6,29 +6,57 @@
   become: yes
 
   tasks:
-    - name: Clone/pull project repo
-      git: repo={{ project_repo }} dest={{ install_root }}/{{ project_name }} accept_hostkey=yes
-      notify:
-      - restart gunicorn
+    - name: Manually create the initial virtualenv
+      command: virtualenv /{{ install_root }}/{{ project_name }}/myenv -p python3 creates="/{{ install_root }}/{{ project_name }}/myenv"
+      
+    - name: activate virtualenv
+      shell:
+        cmd: |
+           . {{ install_root }}/{{ project_name }}/myenv/bin/activate
 
-    - name: install python packages
-      pip: requirements={{ install_root }}/{{ project_name }}/requirements.txt
-      notify:
-      - restart gunicorn
+    # - name: Activate virtualenv
+    #   sudo: yes
+    #   sudo_user: maluki
+    #   command: /{{ install_root }}/{{ project_name }}/myenv/bin/source /{{ install_root }}/{{ project_name }}/myenv/bin/activate
+
+    # - name: Clone/pull project repo
+    #   git: repo={{ project_repo }} dest={{ install_root }}/{{ project_name }} accept_hostkey=yes
+    #   notify:
+    #   - restart gunicorn
+
+    # - name: install python packages
+    #   pip: requirements={{ install_root }}/{{ project_name }}/requirements.txt
+    #   notify:
+    #   - restart gunicorn
+
+    - name: Install requirements
+      pip: 
+       requirements=/{{ install_root }}/{{ project_name }}/requirements.txt 
+       virtualenv=/{{ install_root }}/{{ project_name }}/myenv
 
     - name: copy nginx config
       template: src=files/nginx.j2 dest=/etc/nginx/sites-enabled/{{ project_name }}.conf
       notify:
       - restart nginx
 
-    - name: django migrate
-      django_manage: command=migrate app_path={{ install_root }}/{{ project_name }} pythonpath={{ pythonpath }}
+    # - name: django migrate
+    #   django_manage: command=migrate app_path={{ install_root }}/{{ project_name }} pythonpath={{ pythonpath }}
+    # - name: django migrate
+    - django_manage:
+        command: migrate
+        app_path: "{{ install_root }}/{{ project_name }}/"
+        # settings: "{{ install_root }}/{{ project_name }}/blog_project"
+        # pythonpath: "{{ pythonpath }}"
+        virtualenv: "{{ install_root }}/{{ project_name }}/myenv"
 
-    - name: django collectstatic
-      django_manage: command=collectstatic app_path={{ install_root }}/{{ project_name }} pythonpath={{ pythonpath }}
+    # - name: django collectstatic
+    #   django_manage: 
+    #     command: collectstatic 
+    #     app_path: "{{ install_root }}/{{ project_name }}/"
+    #     virtualenv: "{{ install_root }}/{{ project_name }}/myenv"
 
     - name: copy gunicorn config
-      template: src=files/gunicorn.j2 dest=/etc/init/gunicorn.conf
+      template: src=files/gunicorn.j2 dest=/etc/systemd/system/gunicorn.conf
       notify:
       - restart gunicorn
 
