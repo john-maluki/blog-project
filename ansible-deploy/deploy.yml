@@ -6,13 +6,13 @@
   become: yes
 
   tasks:
-    - name: Manually create the initial virtualenv
-      command: virtualenv /{{ install_root }}/{{ project_name }}/myenv -p python3 creates="/{{ install_root }}/{{ project_name }}/myenv"
+    # - name: Manually create the initial virtualenv
+    #   command: virtualenv /{{ install_root }}/{{ project_name }}/myenv -p python3 creates="/{{ install_root }}/{{ project_name }}/myenv"
       
-    - name: activate virtualenv
-      shell:
-        cmd: |
-           . {{ install_root }}/{{ project_name }}/myenv/bin/activate
+    # - name: activate virtualenv
+    #   shell:
+    #     cmd: |
+    #        . {{ install_root }}/{{ project_name }}/myenv/bin/activate
 
     # - name: Activate virtualenv
     #   sudo: yes
@@ -23,6 +23,21 @@
     #   git: repo={{ project_repo }} dest={{ install_root }}/{{ project_name }} accept_hostkey=yes
     #   notify:
     #   - restart gunicorn
+    - name: Clone repository from github
+      git:
+        repo: "{{ project_repo }}"
+        dest: "{{ install_root }}/{{ project_name }}/"
+        accept_hostkey: yes
+        force: yes
+        version: heroku
+
+    - name: Manually create the initial virtualenv
+      command: virtualenv /{{ install_root }}/{{ project_name }}/myenv -p python3 creates="/{{ install_root }}/{{ project_name }}/myenv"
+      
+    - name: activate virtualenv
+      shell:
+        cmd: |
+           . {{ install_root }}/{{ project_name }}/myenv/bin/activate    
 
     # - name: install python packages
     #   pip: requirements={{ install_root }}/{{ project_name }}/requirements.txt
@@ -49,6 +64,12 @@
         # pythonpath: "{{ pythonpath }}"
         virtualenv: "{{ install_root }}/{{ project_name }}/myenv"
 
+    # Create an initial superuser.
+    # - django_manage:
+    #     command: "createsuperuser --noinput --username=maluki --email=john@mumyi.online "
+    #     app_path: "{{ install_root }}/{{ project_name }}/" 
+    #     virtualenv: "{{ install_root }}/{{ project_name }}/myenv"   
+
     # - name: django collectstatic
     #   django_manage: 
     #     command: collectstatic 
@@ -56,7 +77,7 @@
     #     virtualenv: "{{ install_root }}/{{ project_name }}/myenv"
 
     - name: copy gunicorn config
-      template: src=files/gunicorn.j2 dest=/etc/systemd/system/gunicorn.conf
+      template: src=files/gurnicorn.conf.j2 dest=/etc/systemd/system/gunicorn.service
       notify:
       - restart gunicorn
 
@@ -70,6 +91,12 @@
     - name: restart nginx
       service: name=nginx state=restarted
 
+    # - name: restart gunicorn
+    #   service: name=gunicorn state=restarted
     - name: restart gunicorn
-      service: name=gunicorn state=restarted
+      systemd:
+          name=gunicorn
+          daemon_reload=yes
+          enabled=yes
+          state=restarted
 # vim:ft=ansible:

@@ -1,0 +1,12 @@
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=maluki
+Group=sudo
+WorkingDirectory={{ install_root }}/{{ project_name }}
+ExecStart={{ install_root }}/{{ project_name }}/myenv/bin/gunicorn --workers 3 --bind 0.0.0.0:8000 {{ wsgi_module }}:application
+
+[Install]
+WantedBy=multi-user.target

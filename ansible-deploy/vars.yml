@@ -1,6 +1,6 @@
 ---
 # a unix path-friendly name (IE, no spaces or special characters)
-project_name: blog_project
+project_name: blog_project3
 
 # the base path to install to. You should not need to change this.
 install_root: /srv
@@ -22,10 +22,10 @@ wsgi_module: blog_project.wsgi
 
 # any directories that need to be added to the PYTHONPATH.
 # pythonpath: "{{ install_root }}/{{ project_name }}/blog_project/apps"
-pythonpath: "{{ install_root }}/{{ project_name }}/blog_project"
+pythonpath: "{{ install_root }}/{{ project_name }}"
 
 # the git repository URL for the project
-project_repo: https://github.com/john-maluki/blog-project.git
+project_repo: git@github.com:john-maluki/blog-project.git
     
 # a private key that has access to the repository URL
 ssh_private_key: ~/.ssh/id_rsa
