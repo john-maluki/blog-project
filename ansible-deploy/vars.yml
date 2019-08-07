@@ -73,7 +73,7 @@ system_packages:
   - python-psycopg2
   - python3-apt
   - python3
-  - virtualenv
+  # - virtualenv
   
 
 # vim:ft=ansible:

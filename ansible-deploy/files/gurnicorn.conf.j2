@@ -6,7 +6,7 @@ After=network.target
 User=maluki
 Group=sudo
 WorkingDirectory={{ install_root }}/{{ project_name }}
-ExecStart={{ install_root }}/{{ project_name }}/myenv/bin/gunicorn --workers 3 --bind 0.0.0.0:8000 {{ wsgi_module }}:application
+ExecStart={{ install_root }}/{{ project_name }}/myenv/bin/gunicorn --workers 3 --bind 127.0.0.1:8000 {{ wsgi_module }}:application
 
 [Install]
 WantedBy=multi-user.target

@@ -1,7 +1,9 @@
 server {
-    listen 443 ssl;
+	listen 80;
 	server_name {{ server_name }};
 	charset utf-8;
+
+	ssl_dhparam /etc/letsencrypt/ssl-dhparams-2048.pem;
 
 
 	location /static {

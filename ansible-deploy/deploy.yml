@@ -32,7 +32,7 @@
         version: heroku
 
     - name: Manually create the initial virtualenv
-      shell: virtualenv {{ install_root }}/{{ project_name }}/myenv -p python3 creates="{{ install_root }}/{{ project_name }}/myenv"
+      command: virtualenv {{ install_root }}/{{ project_name }}/myenv -p python3.6 creates="{{ install_root }}/{{ project_name }}/myenv"
       
     - name: activate virtualenv
       shell:
@@ -64,6 +64,50 @@
         # pythonpath: "{{ pythonpath }}"
         virtualenv: "{{ install_root }}/{{ project_name }}/myenv"
 
+        # Installing certbot ssl  certificate
+    - name: Add Certbot
+      apt_repository:
+        repo: 'ppa:certbot/certbot'
+        state: present
+        update-cache: yes
+
+    - name: Install python-certbot
+      apt: name=python-certbot-nginx state=present
+
+    - name: Stop nginx to open port 80
+      service:
+        name: nginx
+        state: stopped
+    
+    - name: Enable https
+      shell:
+        certbot --nginx --noninteractive --agree-tos --email johnmaluki58@gmail.com -d mumyi.online    
+      become: yes
+        
+    - name: Allow UFW
+      ufw:
+        state: enabled
+
+    - name: Allow OpenSSH
+      ufw:
+        rule: allow
+        name: OpenSSH
+
+    - name: Allow Nginx Full
+      ufw:
+        rule: allow
+        name: Nginx Full
+
+    - name: Free port 80
+      shell: 
+        fuser -k 80/tcp
+
+    - name: Restart nginx to make changes
+      service:
+        name: nginx
+        state: restarted
+    # # end of adding certbot
+
     # Create an initial superuser.
     # - django_manage:
     #     command: "createsuperuser --noinput --username=maluki --email=john@mumyi.online "
@@ -75,50 +119,6 @@
     #     command: collectstatic 
     #     app_path: "{{ install_root }}/{{ project_name }}/"
     #     virtualenv: "{{ install_root }}/{{ project_name }}/myenv"
-
-    # Installing certbot ssl  certificate
-    # - name: Add Certbot
-    #   apt_repository:
-    #     repo: 'ppa:certbot/certbot'
-    #     state: present
-    #     update-cache: yes
-
-    # - name: Install python-certbot
-    #   apt: name=python-certbot-nginx state=present
-
-    # - name: Stop nginx to open port 80
-    #   service:
-    #     name: nginx
-    #     state: stopped
-    
-    # - name: Enable https
-    #   shell:
-    #     certbot --nginx --noninteractive --agree-tos --email johnmaluki58@gmail.com -d mumyi.online    
-    #   become: yes
-        
-    # - name: Allow UFW
-    #   ufw:
-    #     state: enabled
-
-    # - name: Allow OpenSSH
-    #   ufw:
-    #     rule: allow
-    #     name: OpenSSH
-
-    # - name: Allow Nginx Full
-    #   ufw:
-    #     rule: allow
-    #     name: Nginx Full
-
-    # - name: Free port 80
-    #   shell: 
-    #     fuser -k 80/tcp
-
-    # - name: Restart nginx to make changes
-    #   service:
-    #     name: nginx
-    #     state: restarted
-    # # end of adding certbot
 
     - name: copy gunicorn config
       template: src=files/gurnicorn.conf.j2 dest=/etc/systemd/system/gunicorn.service
