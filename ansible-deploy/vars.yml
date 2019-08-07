@@ -1,6 +1,6 @@
 ---
 # a unix path-friendly name (IE, no spaces or special characters)
-project_name: blog_project3
+project_name: blog_project2
 
 # the base path to install to. You should not need to change this.
 install_root: /srv
@@ -70,8 +70,10 @@ system_packages:
   - python3-pip
   - python3-dev
   - python3-psycopg2
+  - python-psycopg2
   - python3-apt
   - python3
+  - virtualenv
   
 
 # vim:ft=ansible:
