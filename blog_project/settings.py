@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
     'rest_framework',
-    'contact'
+    'contact',
+    'users',
 
 ]
 
@@ -180,3 +181,7 @@ REST_FRAMEWORK = {
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
+# specify where to redirect the user upon a successful log in
+LOGIN_REDIRECT_URL = 'blog:home'
+
+LOGOUT_REDIRECT_URL = 'blog:home'

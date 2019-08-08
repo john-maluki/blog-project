@@ -14,9 +14,25 @@
             <div class="nav-left">
                 <h1><a href="{% url 'contact:contact' %}">Contact us</a></h1>
             </div>
+            {% if user.is_authenticated %}
             <div class="nav-right">
                 <a href="{% url 'blog:post_new' %}">+ New Blog Post</a>
             </div>
+            {% endif %}
+        </header>
+        <header>
+        {% if user.is_authenticated %}
+        <div class="nav-left">
+            <p>Hi {{ user.username }}!</p>
+            <p><a href="{% url 'logout' %}">Log out</a></p>
+        </div>
+        {% else %}
+        <div class="nav-left">
+            <p>You are not logged in.</p>
+            <p><a href="{% url 'login' %}">Log In</a></p>
+            <p><a href="{% url 'signup' %}">Sign Up</a></p>
+        </div>
+        {% endif %}
         </header>
         <div>
             {% block content %}
