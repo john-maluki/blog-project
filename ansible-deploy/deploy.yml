@@ -64,49 +64,49 @@
         # pythonpath: "{{ pythonpath }}"
         virtualenv: "{{ install_root }}/{{ project_name }}/myenv"
 
-        # Installing certbot ssl  certificate
-    - name: Add Certbot
-      apt_repository:
-        repo: 'ppa:certbot/certbot'
-        state: present
-        update-cache: yes
+    #     # Installing certbot ssl  certificate
+    # - name: Add Certbot
+    #   apt_repository:
+    #     repo: 'ppa:certbot/certbot'
+    #     state: present
+    #     update-cache: yes
 
-    - name: Install python-certbot
-      apt: name=python-certbot-nginx state=present
+    # - name: Install python-certbot
+    #   apt: name=python-certbot-nginx state=present
 
-    - name: Stop nginx to open port 80
-      service:
-        name: nginx
-        state: stopped
+    # - name: Stop nginx to open port 80
+    #   service:
+    #     name: nginx
+    #     state: stopped
     
-    - name: Enable https
-      shell:
-        certbot --nginx --noninteractive --agree-tos --email johnmaluki58@gmail.com -d mumyi.online    
-      become: yes
+    # - name: Enable https
+    #   shell:
+    #     certbot --nginx --noninteractive --agree-tos --email johnmaluki58@gmail.com -d mumyi.online    
+    #   become: yes
         
-    - name: Allow UFW
-      ufw:
-        state: enabled
+    # - name: Allow UFW
+    #   ufw:
+    #     state: enabled
 
-    - name: Allow OpenSSH
-      ufw:
-        rule: allow
-        name: OpenSSH
+    # - name: Allow OpenSSH
+    #   ufw:
+    #     rule: allow
+    #     name: OpenSSH
 
-    - name: Allow Nginx Full
-      ufw:
-        rule: allow
-        name: Nginx Full
+    # - name: Allow Nginx Full
+    #   ufw:
+    #     rule: allow
+    #     name: Nginx Full
 
-    - name: Free port 80
-      shell: 
-        fuser -k 80/tcp
+    # # - name: Free port 80
+    # #   shell: 
+    # #     fuser -k 80/tcp
 
-    - name: Restart nginx to make changes
-      service:
-        name: nginx
-        state: restarted
-    # # end of adding certbot
+    # - name: Restart nginx to make changes
+    #   service:
+    #     name: nginx
+    #     state: restarted
+    # # # end of adding certbot
 
     # Create an initial superuser.
     # - django_manage:

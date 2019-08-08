@@ -27,7 +27,7 @@ SECRET_KEY = 'p*4^#x%o9!h&@%de1&c19hn31a-o!%1c0r^5wt+5)vokm)$lvd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'blogig-app.herokuapp.com', '35.184.133.116', 'mumyi.online', 'www.mumyi.online', '34.66.38.198']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'blogig-app.herokuapp.com', '35.184.133.116', 'mumyi.online', 'www.mumyi.online', '34.66.38.198']
 
 
 # Application definition
@@ -139,13 +139,13 @@ USE_TZ = True
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # The absolute path to the directory where collectstatic will collect static files for deployment.
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # The URL to use when referring to static files (where they will be served from)
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    (os.path.join(BASE_DIR, 'static')),
+    (os.path.join(BASE_DIR, 'staticfiles')),
 )
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -179,5 +179,4 @@ REST_FRAMEWORK = {
 
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
-
 
