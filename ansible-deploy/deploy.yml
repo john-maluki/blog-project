@@ -56,13 +56,17 @@
 
     # - name: django migrate
     #   django_manage: command=migrate app_path={{ install_root }}/{{ project_name }} pythonpath={{ pythonpath }}
-    # - name: django migrate
-    - django_manage:
+    - name: django migrate
+      django_manage:
         command: migrate
         app_path: "{{ install_root }}/{{ project_name }}/"
-        # settings: "{{ install_root }}/{{ project_name }}/blog_project"
-        # pythonpath: "{{ pythonpath }}"
         virtualenv: "{{ install_root }}/{{ project_name }}/myenv"
+
+    - name: django collectstatic
+      django_manage:
+        command: collectstatic
+        app_path: "{{ install_root }}/{{ project_name }}/"
+        virtualenv: "{{ install_root }}/{{ project_name }}/myenv"    
 
     #     # Installing certbot ssl  certificate
     # - name: Add Certbot
