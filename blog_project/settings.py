@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'contact',
     'users',
+    'social_django',
 
 ]
 
@@ -72,6 +73,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect'
             ],
         },
     },
@@ -194,3 +197,22 @@ LOGOUT_REDIRECT_URL = reverse_lazy('blog:home')
 # APPEND_SLASH = False
 
 # APPEND_SLASH = True
+
+AUTHENTICATION_BACKENDS = (
+ 'social_core.backends.open_id.OpenIdAuth',  # for Google authentication
+ 'social_core.backends.google.GoogleOpenId',  # for Google authentication
+ 'social_core.backends.google.GoogleOAuth2',  # for Google authentication
+ 'social_core.backends.github.GithubOAuth2',  # for Github authentication
+ 'social_core.backends.facebook.FacebookOAuth2',  # for Facebook authentication
+
+ 'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '993808835110-q42vkqv7vr7d5adpharfmpahbtfctlkn.apps.googleusercontent.com'  
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'InD8L52AP_aHtfAYlvIyKmQb'
+
+SOCIAL_AUTH_GITHUB_KEY = '8600ff6d00941d8c0ca7'
+SOCIAL_AUTH_GITHUB_SECRET = '86e864ba49154d0bfd286b58c46cd62e680d0df3'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '465170650987316'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'ad7b1d2923928b85e1b5b8a868011a95'
