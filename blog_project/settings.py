@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import dj_database_url
-# from django.urls import reverse_lazy
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -183,13 +183,13 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
 # specify where to redirect the user upon a successful log in
-LOGIN_REDIRECT_URL = 'blog:home'
-LOGIN_URL = 'login'
-LOGOUT_REDIRECT_URL = 'blog:home'
+# LOGIN_REDIRECT_URL = 'blog:home'
+# LOGIN_URL = 'login'
+# LOGOUT_REDIRECT_URL = 'blog:home'
 
-# LOGIN_REDIRECT_URL = reverse_lazy('blog:home')
-# LOGIN_URL = reverse_lazy('login')
-# LOGOUT_REDIRECT_URL = reverse_lazy('blog:home')
+LOGIN_REDIRECT_URL = reverse_lazy('blog:home')
+LOGIN_URL = reverse_lazy('login')
+LOGOUT_REDIRECT_URL = reverse_lazy('blog:home')
 
 # APPEND_SLASH = False
 
