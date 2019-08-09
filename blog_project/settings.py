@@ -186,4 +186,6 @@ LOGIN_REDIRECT_URL = 'blog:home'
 
 LOGOUT_REDIRECT_URL = 'blog:home'
 
-APPEND_SLASH = False
+# APPEND_SLASH = False
+
+APPEND_SLASH = True
