@@ -15,12 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.contrib.auth import views as auth_views
+
+
+def trigger_error(request):
+    division_by_zero = 1 / 0
 
 
 urlpatterns = [
+    path('sentry-debug/', trigger_error),
     path('admin/', admin.site.urls),
-    path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('users/', include('users.urls')),
     # blog app url
@@ -29,4 +32,7 @@ urlpatterns = [
     path('', include('blog.api.urls')),
     # contact app url
     path('contact/', include('contact.urls', namespace='contact')),
+    # search app url
+    path('', include('search.urls')),
+    path('', include('django_prometheus.urls')),
 ]

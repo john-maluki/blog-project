@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 import dj_database_url
 from django.urls import reverse_lazy
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,7 +28,7 @@ SECRET_KEY = 'p*4^#x%o9!h&@%de1&c19hn31a-o!%1c0r^5wt+5)vokm)$lvd'
 # SECRET_KEY = os.environ["BLOG_SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'blogig-app.herokuapp.com', '35.184.133.116', 'mumyi.online', 'www.mumyi.online', '34.66.38.198']
 
@@ -41,15 +43,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
     'blog.apps.BlogConfig',
     'rest_framework',
     'contact',
     'users',
     'social_django',
-
+    'django_elasticsearch_dsl',
+    'search',
+    'django_prometheus',
 ]
 
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -58,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
 ROOT_URLCONF = 'blog_project.urls'
@@ -186,13 +193,13 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
 # specify where to redirect the user upon a successful log in
-# LOGIN_REDIRECT_URL = 'blog:home'
-# LOGIN_URL = 'login'
-# LOGOUT_REDIRECT_URL = 'blog:home'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = 'login'
+LOGOUT_REDIRECT_URL = '/'
 
-LOGIN_REDIRECT_URL = reverse_lazy('blog:home')
-LOGIN_URL = reverse_lazy('login')
-LOGOUT_REDIRECT_URL = reverse_lazy('blog:home')
+# LOGIN_REDIRECT_URL = reverse_lazy('blog:home')
+# LOGIN_URL = reverse_lazy('login')
+# LOGOUT_REDIRECT_URL = reverse_lazy('blog:home')
 
 # APPEND_SLASH = False
 
@@ -202,7 +209,7 @@ AUTHENTICATION_BACKENDS = (
  'social_core.backends.open_id.OpenIdAuth',  # for Google authentication
  'social_core.backends.google.GoogleOpenId',  # for Google authentication
  'social_core.backends.google.GoogleOAuth2',  # for Google authentication
- 'social_core.backends.github.GithubOAuth2',  # for Github authentication
+ #  'social_core.backends.github.GithubOAuth2',  # for Github authentication
  'social_core.backends.facebook.FacebookOAuth2',  # for Facebook authentication
 
  'django.contrib.auth.backends.ModelBackend',
@@ -211,8 +218,33 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '993808835110-q42vkqv7vr7d5adpharfmpahbtfctlkn.apps.googleusercontent.com'  
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'InD8L52AP_aHtfAYlvIyKmQb'
 
-SOCIAL_AUTH_GITHUB_KEY = '8600ff6d00941d8c0ca7'
-SOCIAL_AUTH_GITHUB_SECRET = '86e864ba49154d0bfd286b58c46cd62e680d0df3'
+# SOCIAL_AUTH_GITHUB_KEY = '8600ff6d00941d8c0ca7'
+# SOCIAL_AUTH_GITHUB_SECRET = '86e864ba49154d0bfd286b58c46cd62e680d0df3'
 
 SOCIAL_AUTH_FACEBOOK_KEY = '465170650987316'
 SOCIAL_AUTH_FACEBOOK_SECRET = 'ad7b1d2923928b85e1b5b8a868011a95'
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'localhost:9200'
+    },
+}
+
+# Cache time to live is 15 minutes.
+CACHE_TTL = 60 * 15
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+# working on sentry
+sentry_sdk.init(
+    dsn="https://e11e41dabd6342b4856c34bb1da6bfd3@sentry.io/1529486",
+    integrations=[DjangoIntegration()]
+)

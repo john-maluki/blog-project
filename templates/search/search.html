@@ -1,13 +1,18 @@
-<!-- templates/home.html -->
 {% extends 'base.html' %}
+
 {% block content %}
-<form style="float: right;" method="get" action="{% url 'search' %}">
-        <input style="border-right-width: 10px" id="q" name="q" type="text" placeholder="search post here...">
-</form>
-    {% for post in object_list %}
+{% if posts %}
+   <h1>Result set...</h1>
+   {% for post in posts %}
         <div class="post-entry">
             <h2><a href="{% url 'blog:post_detail' post.pk %}">{{ post.title }}</a></h2>
             <p>{{ post.body }}</p>
         </div>
+     
     {% endfor %}
+{% else %}
+  <h1>No such post available</h1>
+{% endif %}    
+<hr>
+<h2><a href="{% url 'blog:home' %}">Back</a></h2>
 {% endblock content %}
