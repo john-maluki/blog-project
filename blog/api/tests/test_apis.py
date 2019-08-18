@@ -73,7 +73,7 @@ class BlogApiTestCase(APITestCase):
         }
         url = api_reverse('post_rud', kwargs={'pk': 1})
         response = self.client.get(url, data, formart='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         response = self.client.post(url, data, formart='json')
         self.assertEqual(
             response.status_code,
@@ -176,7 +176,7 @@ class BlogApiTestCase(APITestCase):
         url = api_reverse('post_update', kwargs={'pk': 1})
         response = self.client.get(url, data, formart='json')
         self.assertEqual(
-            response.status_code, status.HTTP_200_OK
+            response.status_code, status.HTTP_404_NOT_FOUND
         )
 
     # test the item delete, patch method not allowed

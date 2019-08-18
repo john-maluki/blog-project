@@ -6,23 +6,9 @@
   become: yes
 
   tasks:
-    # - name: Manually create the initial virtualenv
-    #   command: virtualenv /{{ install_root }}/{{ project_name }}/myenv -p python3 creates="/{{ install_root }}/{{ project_name }}/myenv"
-      
-    # - name: activate virtualenv
-    #   shell:
-    #     cmd: |
-    #        . {{ install_root }}/{{ project_name }}/myenv/bin/activate
+    - name: Install virtualenv
+      pip: name=virtualenv executable=pip3
 
-    # - name: Activate virtualenv
-    #   sudo: yes
-    #   sudo_user: maluki
-    #   command: /{{ install_root }}/{{ project_name }}/myenv/bin/source /{{ install_root }}/{{ project_name }}/myenv/bin/activate
-
-    # - name: Clone/pull project repo
-    #   git: repo={{ project_repo }} dest={{ install_root }}/{{ project_name }} accept_hostkey=yes
-    #   notify:
-    #   - restart gunicorn
     - name: Clone repository from github
       git:
         repo: "{{ project_repo }}"
@@ -33,16 +19,11 @@
 
     - name: Manually create the initial virtualenv
       command: virtualenv {{ install_root }}/{{ project_name }}/myenv -p python3.6 creates="{{ install_root }}/{{ project_name }}/myenv"
-      
+
     - name: activate virtualenv
       shell:
         cmd: |
-           . {{ install_root }}/{{ project_name }}/myenv/bin/activate    
-
-    # - name: install python packages
-    #   pip: requirements={{ install_root }}/{{ project_name }}/requirements.txt
-    #   notify:
-    #   - restart gunicorn
+           . {{ install_root }}/{{ project_name }}/myenv/bin/activate  
 
     - name: Install requirements
       pip: 
@@ -54,8 +35,6 @@
       notify:
       - restart nginx
 
-    # - name: django migrate
-    #   django_manage: command=migrate app_path={{ install_root }}/{{ project_name }} pythonpath={{ pythonpath }}
     - name: django migrate
       django_manage:
         command: migrate
@@ -77,17 +56,7 @@
 
     # - name: Install python-certbot
     #   apt: name=python-certbot-nginx state=present
-
-    # - name: Stop nginx to open port 80
-    #   service:
-    #     name: nginx
-    #     state: stopped
     
-    # - name: Enable https
-    #   shell:
-    #     certbot --nginx --noninteractive --agree-tos --email johnmaluki58@gmail.com -d mumyi.online    
-    #   become: yes
-        
     # - name: Allow UFW
     #   ufw:
     #     state: enabled
@@ -102,27 +71,28 @@
     #     rule: allow
     #     name: Nginx Full
 
-    # # - name: Free port 80
-    # #   shell: 
-    # #     fuser -k 80/tcp
+    # - name: Enable https
+    #   shell:
+    #     "certbot --nginx --noninteractive --agree-tos --email johnmaluki58@gmail.com -d mumyi.online"    
+    #   become: yes
 
     # - name: Restart nginx to make changes
     #   service:
     #     name: nginx
     #     state: restarted
-    # # # end of adding certbot
+    # # end of adding certbot
 
-    # Create an initial superuser.
+    # # Create an initial superuser.
     # - django_manage:
     #     command: "createsuperuser --noinput --username=maluki --email=john@mumyi.online "
     #     app_path: "{{ install_root }}/{{ project_name }}/" 
     #     virtualenv: "{{ install_root }}/{{ project_name }}/myenv"   
 
-    # - name: django collectstatic
-    #   django_manage: 
-    #     command: collectstatic 
-    #     app_path: "{{ install_root }}/{{ project_name }}/"
-    #     virtualenv: "{{ install_root }}/{{ project_name }}/myenv"
+    - name: django collectstatic
+      django_manage: 
+        command: collectstatic 
+        app_path: "{{ install_root }}/{{ project_name }}/"
+        virtualenv: "{{ install_root }}/{{ project_name }}/myenv"
 
     - name: copy gunicorn config
       template: src=files/gurnicorn.conf.j2 dest=/etc/systemd/system/gunicorn.service

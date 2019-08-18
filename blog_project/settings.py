@@ -51,11 +51,11 @@ INSTALLED_APPS = [
     'social_django',
     'django_elasticsearch_dsl',
     'search',
-    'django_prometheus',
+    'elasticsearch_dsl'
+    # 'django_prometheus',
 ]
 
 MIDDLEWARE = [
-    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -64,7 +64,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
 ROOT_URLCONF = 'blog_project.urls'
@@ -107,6 +106,9 @@ DATABASES = {
         'PASSWORD': '123456789',
         'HOST': 'localhost',
         'PORT': '5432',
+        'TEST': {
+            'NAME': 'blog-test',
+        },
     }
 }
 
@@ -193,9 +195,9 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
 # specify where to redirect the user upon a successful log in
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'blog:home'
 LOGIN_URL = 'login'
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = 'blog:home'
 
 # LOGIN_REDIRECT_URL = reverse_lazy('blog:home')
 # LOGIN_URL = reverse_lazy('login')
@@ -248,3 +250,5 @@ sentry_sdk.init(
     dsn="https://e11e41dabd6342b4856c34bb1da6bfd3@sentry.io/1529486",
     integrations=[DjangoIntegration()]
 )
+
+
