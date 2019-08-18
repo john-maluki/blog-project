@@ -51,8 +51,8 @@ INSTALLED_APPS = [
     'social_django',
     'django_elasticsearch_dsl',
     'search',
-    'elasticsearch_dsl'
-    # 'django_prometheus',
+    'elasticsearch_dsl',
+   
 ]
 
 MIDDLEWARE = [
@@ -195,13 +195,13 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
 # specify where to redirect the user upon a successful log in
-LOGIN_REDIRECT_URL = 'blog:home'
-LOGIN_URL = 'login'
-LOGOUT_REDIRECT_URL = 'blog:home'
+# LOGIN_REDIRECT_URL = 'blog:home'
+# LOGIN_URL = 'login'
+# LOGOUT_REDIRECT_URL = 'blog:home'
 
-# LOGIN_REDIRECT_URL = reverse_lazy('blog:home')
-# LOGIN_URL = reverse_lazy('login')
-# LOGOUT_REDIRECT_URL = reverse_lazy('blog:home')
+LOGIN_REDIRECT_URL = reverse_lazy('blog:home')
+LOGIN_URL = reverse_lazy('login')
+LOGOUT_REDIRECT_URL = reverse_lazy('blog:home')
 
 # APPEND_SLASH = False
 
@@ -217,8 +217,8 @@ AUTHENTICATION_BACKENDS = (
  'django.contrib.auth.backends.ModelBackend',
 )
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '993808835110-q42vkqv7vr7d5adpharfmpahbtfctlkn.apps.googleusercontent.com'  
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'InD8L52AP_aHtfAYlvIyKmQb'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '993808835110-2jscgjee698o7aq1sf3ggn031cp349os.apps.googleusercontent.com'  
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'Q7dxVeTCcLzKIN6RgdCn9OXH'
 
 # SOCIAL_AUTH_GITHUB_KEY = '8600ff6d00941d8c0ca7'
 # SOCIAL_AUTH_GITHUB_SECRET = '86e864ba49154d0bfd286b58c46cd62e680d0df3'
