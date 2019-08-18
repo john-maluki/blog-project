@@ -6,6 +6,19 @@
   become: yes
 
   tasks:
+    - name: Ensure Redis is present
+      apt: pkg=redis-server state=latest
+      sudo: true
+
+    - name: Ensure Redis is started
+      service: name=redis-server state=started enabled=yes
+      sudo: true
+
+    # - name: Ensure Redis Configuration
+    #   template: src=files/redis.conf.j2 dest=/etc/redis/redis.conf #owner=maluki group=maluki mode=0644
+    #   sudo: true
+    #   notify: Redis Restart
+
     - name: Install virtualenv
       pip: name=virtualenv executable=pip3
 
@@ -117,4 +130,8 @@
           daemon_reload=yes
           enabled=yes
           state=restarted
+
+    - name: Redis Restart
+      service: name=redis-server state=restarted enabled=yes
+      sudo: true      
 # vim:ft=ansible:

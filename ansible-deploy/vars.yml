@@ -59,6 +59,10 @@ db_name: blog
 db_user: muimi
 db_password: "123456789"
 
+#redis
+redis_port: 6379
+redis_databases: 1
+
 # apt packages, you should not need to change this unless you have packages
 # listed in your requirements.txt that depend on system packages.
 system_packages:
@@ -73,6 +77,7 @@ system_packages:
   - python-psycopg2
   - python3-apt
   - python3
+  - redis-server
   # - virtualenv
   
 
