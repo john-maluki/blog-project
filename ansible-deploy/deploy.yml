@@ -30,6 +30,11 @@
         force: yes
         version: elasticsearch 
 
+    - name: Copy .env file
+      copy:
+        src: /home/maluki/blog/django_blog/blog_project/.env
+        dest: "{{ install_root }}/{{ project_name }}/"   
+
     - name: Manually create the initial virtualenv
       command: virtualenv {{ install_root }}/{{ project_name }}/myenv -p python3.6 creates="{{ install_root }}/{{ project_name }}/myenv"
 

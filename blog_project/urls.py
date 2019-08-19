@@ -24,7 +24,7 @@ def trigger_error(request):
 urlpatterns = [
     path('sentry-debug/', trigger_error),
     path('admin/', admin.site.urls),
-    path('users/', include('django.contrib.auth.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('', include('users.urls')),
     # blog app url
     path('', include('blog.urls', namespace='blog')),

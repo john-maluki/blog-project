@@ -15,6 +15,7 @@ import dj_database_url
 from django.urls import reverse_lazy
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+from decouple import config, Csv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,13 +25,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'p*4^#x%o9!h&@%de1&c19hn31a-o!%1c0r^5wt+5)vokm)$lvd'
+# SECRET_KEY = 'p*4^#x%o9!h&@%de1&c19hn31a-o!%1c0r^5wt+5)vokm)$lvd'
+SECRET_KEY = config('BLOG_SECRET_KEY')
 # SECRET_KEY = os.environ["BLOG_SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'blogig-app.herokuapp.com', '35.184.133.116', 'mumyi.online', 'www.mumyi.online', '34.66.38.198']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 
 # Application definition
@@ -101,13 +103,13 @@ WSGI_APPLICATION = 'blog_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'blog',
-        'USER': 'muimi',
-        'PASSWORD': '123456789',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('PORT'),
         'TEST': {
-            'NAME': 'blog-test',
+            'NAME': config('BLOG_TEST_DB'),
         },
     }
 }
@@ -174,9 +176,9 @@ CELERY_TIMEZONE = 'Africa/Nairobi'
 
 # Emails
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
-DEFAULT_FROM_EMAIL = 'john.maluki12@gmail.com'
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 
 REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_CLASSES': [
@@ -201,7 +203,7 @@ DATABASES['default'].update(db_from_env)
 
 LOGIN_REDIRECT_URL = reverse_lazy('blog:home')
 LOGIN_URL = reverse_lazy('login')
-LOGOUT_REDIRECT_URL = reverse_lazy('blog:home')
+LOGOUT_REDIRECT_URL = reverse_lazy('login')
 
 # APPEND_SLASH = False
 
@@ -217,14 +219,14 @@ AUTHENTICATION_BACKENDS = (
  'django.contrib.auth.backends.ModelBackend',
 )
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '993808835110-2jscgjee698o7aq1sf3ggn031cp349os.apps.googleusercontent.com'  
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'Q7dxVeTCcLzKIN6RgdCn9OXH'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
 # SOCIAL_AUTH_GITHUB_KEY = '8600ff6d00941d8c0ca7'
 # SOCIAL_AUTH_GITHUB_SECRET = '86e864ba49154d0bfd286b58c46cd62e680d0df3'
 
-SOCIAL_AUTH_FACEBOOK_KEY = '465170650987316'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'ad7b1d2923928b85e1b5b8a868011a95'
+SOCIAL_AUTH_FACEBOOK_KEY = config('SOCIAL_AUTH_FACEBOOK_KEY')
+SOCIAL_AUTH_FACEBOOK_SECRET = config('SOCIAL_AUTH_FACEBOOK_SECRET')
 
 ELASTICSEARCH_DSL = {
     'default': {
