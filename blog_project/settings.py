@@ -167,8 +167,8 @@ STATICFILES_DIRS = (
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # CELERY STUFF
-BROKER_URL = 'amqp://localhost'
-CELERY_RESULT_BACKEND = 'amqp://localhost'
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -196,18 +196,10 @@ REST_FRAMEWORK = {
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
-# specify where to redirect the user upon a successful log in
-# LOGIN_REDIRECT_URL = 'blog:home'
-# LOGIN_URL = 'login'
-# LOGOUT_REDIRECT_URL = 'blog:home'
-
 LOGIN_REDIRECT_URL = reverse_lazy('blog:home')
 LOGIN_URL = reverse_lazy('login')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
 
-# APPEND_SLASH = False
-
-# APPEND_SLASH = True
 
 AUTHENTICATION_BACKENDS = (
  'social_core.backends.open_id.OpenIdAuth',  # for Google authentication
@@ -222,8 +214,6 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
-# SOCIAL_AUTH_GITHUB_KEY = '8600ff6d00941d8c0ca7'
-# SOCIAL_AUTH_GITHUB_SECRET = '86e864ba49154d0bfd286b58c46cd62e680d0df3'
 
 SOCIAL_AUTH_FACEBOOK_KEY = config('SOCIAL_AUTH_FACEBOOK_KEY')
 SOCIAL_AUTH_FACEBOOK_SECRET = config('SOCIAL_AUTH_FACEBOOK_SECRET')
