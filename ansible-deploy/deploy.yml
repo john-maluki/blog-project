@@ -49,7 +49,7 @@
        virtualenv=/{{ install_root }}/{{ project_name }}/myenv
 
     - name: copy nginx config
-      template: src=files/nginx2.j2 dest=/etc/nginx/sites-enabled/{{ project_name }}.conf
+      template: src=files/nginx.j2 dest=/etc/nginx/sites-enabled/{{ project_name }}.conf
       notify:
       - restart nginx
 
