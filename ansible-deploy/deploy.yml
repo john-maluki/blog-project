@@ -123,7 +123,7 @@
     #   service:
     #     name: nginx
     #     state: restarted
-    # # end of adding certbot
+    # # # end of adding certbot
 
   handlers: 
     - name: restart nginx
