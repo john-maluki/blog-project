@@ -1,5 +1,3 @@
-from django.contrib.postgres.search import SearchVectorField
-from django.contrib.postgres.indexes import GinIndex
 from django.db import models
 from django.urls import reverse
 from search.search import BlogPostIndex

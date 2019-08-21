@@ -1,9 +1,14 @@
 [run]
 branch = True
+omit = /home/maluki/blog/django_blog/blog_project/users/*
+       /home/maluki/blog/django_blog/blog_project/search/*
+       /home/maluki/blog/django_blog/blog_project/contact/*
+       /home/maluki/blog/django_blog/blog_project/blog/api/*
+
 
 
 [report]
-fail_under = 85
+fail_under = 95
 precision = 2
 show_missing = True
 

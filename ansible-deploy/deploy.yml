@@ -49,7 +49,7 @@
        virtualenv=/{{ install_root }}/{{ project_name }}/myenv
 
     - name: copy nginx config
-      template: src=files/nginx.j2 dest=/etc/nginx/sites-enabled/{{ project_name }}.conf
+      template: src=files/nginx2.j2 dest=/etc/nginx/sites-enabled/{{ project_name }}.conf
       notify:
       - restart nginx
 
@@ -65,7 +65,32 @@
         app_path: "{{ install_root }}/{{ project_name }}/"
         virtualenv: "{{ install_root }}/{{ project_name }}/myenv"    
 
-    #     # Installing certbot ssl  certificate
+        
+
+    # # Create an initial superuser.
+    # - django_manage:
+    #     command: "createsuperuser --noinput --username=maluki --email=john@mumyi.online "
+    #     app_path: "{{ install_root }}/{{ project_name }}/" 
+    #     virtualenv: "{{ install_root }}/{{ project_name }}/myenv"   
+
+    - name: django collectstatic
+      django_manage: 
+        command: collectstatic 
+        app_path: "{{ install_root }}/{{ project_name }}/"
+        virtualenv: "{{ install_root }}/{{ project_name }}/myenv"
+
+    - name: copy gunicorn config
+      template: src=files/gurnicorn.conf.j2 dest=/etc/systemd/system/gunicorn.service
+      notify:
+      - restart gunicorn
+
+    - name: make sure nginx server is running
+      service: name=nginx state=started enabled=yes
+
+    - name: make sure gunicorn server is running
+      service: name=gunicorn state=started enabled=yes
+    
+    # # Installing certbot ssl  certificate
     # - name: Add Certbot
     #   apt_repository:
     #     repo: 'ppa:certbot/certbot'
@@ -100,35 +125,10 @@
     #     state: restarted
     # # end of adding certbot
 
-    # # Create an initial superuser.
-    # - django_manage:
-    #     command: "createsuperuser --noinput --username=maluki --email=john@mumyi.online "
-    #     app_path: "{{ install_root }}/{{ project_name }}/" 
-    #     virtualenv: "{{ install_root }}/{{ project_name }}/myenv"   
-
-    - name: django collectstatic
-      django_manage: 
-        command: collectstatic 
-        app_path: "{{ install_root }}/{{ project_name }}/"
-        virtualenv: "{{ install_root }}/{{ project_name }}/myenv"
-
-    - name: copy gunicorn config
-      template: src=files/gurnicorn.conf.j2 dest=/etc/systemd/system/gunicorn.service
-      notify:
-      - restart gunicorn
-
-    - name: make sure nginx server is running
-      service: name=nginx state=started enabled=yes
-
-    - name: make sure gunicorn server is running
-      service: name=gunicorn state=started enabled=yes
-
   handlers: 
     - name: restart nginx
       service: name=nginx state=restarted
 
-    # - name: restart gunicorn
-    #   service: name=gunicorn state=restarted
     - name: restart gunicorn
       systemd:
           name=gunicorn
@@ -139,4 +139,5 @@
     - name: Redis Restart
       service: name=redis-server state=restarted enabled=yes
       sudo: true      
+
 # vim:ft=ansible:

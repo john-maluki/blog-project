@@ -29,7 +29,7 @@ urlpatterns = [
     # blog app url
     path('', include('blog.urls', namespace='blog')),
     # api posting url
-    path('', include('blog.api.urls')),
+    path('/', include('blog.api.urls')),
     # contact app url
     path('contact/', include('contact.urls', namespace='contact')),
     # search app url

@@ -1,7 +1,9 @@
 from celery.decorators import task
 from celery.utils.log import get_task_logger
-
+from celery.task.schedules import crontab
+from celery.decorators import periodic_task
 from contact.emails import send_contact_email
+from contact.emails import send_periodic_email
 
 logger = get_task_logger(__name__)
 
@@ -13,6 +15,8 @@ def send_contact_email_task(email, message):
     return send_contact_email(email, message)
 
 
-# @periodic_task(run_every=crontab(hour="*", minute="*", day_of_week="*"))
-# def trigger_emails():
-#     send_contact_email()
+@periodic_task(run_every=(
+    crontab(minute='*/1')), name="sendperiodic_email", ignore_result=True)
+def send_periodic_email_task():
+    logger.info("Sent periodic email")
+    send_periodic_email()
