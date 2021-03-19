@@ -28,7 +28,7 @@ setup(
 
     install_requires=[
         'Django>=2.1.0,<=2.2.2',
-        'djangorestframework==3.9.4',
+        'djangorestframework==3.11.2',
         'celery>=3.1.16'
     ],
 )
